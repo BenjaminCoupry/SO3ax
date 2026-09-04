@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "so3ax"
+version = "0.1.0"
+description = "Clebsch-Gordan tensors, so(3) generators and Wigner D-matrices for SO(3), in pure JAX."
+requires-python = ">=3.10"
+dependencies = [
+    "jax>=0.9",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+    "sphericart>=1.0",
+    "sphericart-jax>=1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
