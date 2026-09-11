@@ -4,6 +4,7 @@ import so3ax.clebsch_gordan as clebsch_gordan
 import so3ax.generators as generators
 import so3ax.wigner as wigner
 
+@functools.partial(jax.jit, static_argnames=('l'))
 def real_to_complex(l):
     """Build the unitary change-of-basis matrix from real to complex spherical
     harmonics for the `l` irreducible representation.
@@ -106,6 +107,7 @@ def wigner_D_real_tensor(l, log_coordinates):
     result = jax.numpy.real(jax.numpy.einsum('ij, lm, ...jl -> ...im', jax.numpy.conj(q.T), q, wigner_D_tensor))
     return result
 
+@jax.jit
 def so3_to_log_coordinates(rotation):
     """Recover the logarithmic coordinates of a rotation from its `SO(3)` matrix.
 
