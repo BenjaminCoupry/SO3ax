@@ -12,9 +12,9 @@ from so3ax.real_tensors import (
 from so3ax.wigner import wigner_D_tensor
 
 
-ATOL = 1e-6
+ATOL = 1e-6 if jax.numpy.result_type(float) == jax.numpy.float64 else 1e-3
 N_TEST = 15
-LMAX = 6
+LMAX = 6 if jax.numpy.result_type(float) == jax.numpy.float64 else 5
 
 # jit-cached across the seed parametrization; jit is transparent to the results.
 real_to_complex = jax.jit(real_to_complex, static_argnums=(0,))

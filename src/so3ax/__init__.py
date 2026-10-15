@@ -1,9 +1,5 @@
 """Minimal JAX toolkit for the representation theory of SO(3).
 """
-import jax
-
-jax.config.update("jax_enable_x64", True)
-
 from .clebsch_gordan import (
     clebsch_gordan_tensor,
 )

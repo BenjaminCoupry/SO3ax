@@ -48,7 +48,7 @@ wigner_D = jax.scipy.linalg.block_diag(
 assert jax.numpy.allclose(
     sphericart.jax.spherical_harmonics(points @ rotation.T, lmax),
     harmonics @ wigner_D.T,
-    atol=1e-6,
+    atol=1e-4,  # float32 precision; much tighter with float64
 )
 ```
 
@@ -93,6 +93,34 @@ is the unitary matrix relating the two.
 Rotations are passed as logarithmic coordinates: a rotation vector whose
 direction is the axis and whose norm is the angle. `so3_to_log_coordinates`
 recovers them from a rotation matrix (not differentiable at a half-turn).
+
+## Precision
+
+SO3ax does not change JAX's precision settings: tensors come back in JAX's
+default floating dtype, which is float32 unless 64-bit mode is enabled. That is
+accurate for low degrees, but the error grows quickly with `l`. 
+For high degrees, enable float64 before any JAX computation:
+
+```python
+import jax
+
+jax.config.update("jax_enable_x64", True)  # or run with JAX_ENABLE_X64=1
+
+import so3ax
+```
+
+To get float64 tensors without switching the rest of the program to 64-bit,
+compute them under the context manager:
+
+```python
+import numpy
+
+with jax.enable_x64(True):
+    coupling =so3ax.clebsch_gordan_real_tensor(l1, l2, l3)
+```
+
+The test suite scales its tolerance and its largest `l` with the default dtype;
+run `JAX_ENABLE_X64=1 python -m pytest` to test at full precision.
 
 ## Related libraries
 

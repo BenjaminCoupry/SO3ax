@@ -20,7 +20,7 @@ def _factorial_quotient(numerator, denominator, power):
         The quotient (scalar), raised to `power`.
     """
     kmax = jax.numpy.maximum(jax.numpy.max(numerator), jax.numpy.max(denominator))
-    f = lambda k, s : s + (jax.numpy.sum(numerator >= k) - jax.numpy.sum(denominator >= k))*jax.numpy.log(jax.numpy.float64(k))
+    f = lambda k, s : s + (jax.numpy.sum(numerator >= k) - jax.numpy.sum(denominator >= k))*jax.numpy.log(k)
     log_quotient = jax.lax.fori_loop(1, kmax+1, f, 0, unroll=False)
     quotient = jax.numpy.exp(power*log_quotient)
     return quotient

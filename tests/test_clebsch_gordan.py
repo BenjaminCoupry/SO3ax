@@ -5,9 +5,9 @@ from so3ax.clebsch_gordan import clebsch_gordan_tensor
 from so3ax.wigner import wigner_D_tensor
 
 
-ATOL = 1e-6
+ATOL = 1e-6 if jax.numpy.result_type(float) == jax.numpy.float64 else 1e-3
 N_TEST = 15
-LMAX = 5
+LMAX = 10 if jax.numpy.result_type(float) == jax.numpy.float64 else 5
 
 clebsch_gordan_tensor = jax.jit(clebsch_gordan_tensor, static_argnums=(0, 1, 2))
 wigner_D_tensor = jax.jit(wigner_D_tensor, static_argnums=(0,))
@@ -16,7 +16,7 @@ wigner_D_tensor = jax.jit(wigner_D_tensor, static_argnums=(0,))
 def _random_pair(key):
     key_l1, key_l2 = jax.random.split(key, 2)
     l1 = int(jax.random.randint(key_l1, (), 0, LMAX + 1))
-    l2 = int(jax.random.randint(key_l2, (), 0, LMAX + 1))
+    l2 = int(jax.random.randint(key_l2, (), 0, LMAX - l1 + 1))  # l1 + l2 <= LMAX, so every l3 <= LMAX
     return l1, l2
 
 

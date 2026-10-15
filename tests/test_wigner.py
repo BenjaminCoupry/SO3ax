@@ -6,9 +6,9 @@ from so3ax.real_tensors import so3_to_log_coordinates
 from so3ax.wigner import wigner_D_tensor
 
 
-ATOL = 1e-6
+ATOL = 1e-6 if jax.numpy.result_type(float) == jax.numpy.float64 else 1e-3
 N_TEST = 15
-LMAX = 8
+LMAX = 8 if jax.numpy.result_type(float) == jax.numpy.float64 else 5
 
 wigner_D_tensor = jax.jit(wigner_D_tensor, static_argnums=(0,))
 

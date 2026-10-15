@@ -4,9 +4,9 @@ import pytest
 from so3ax.generators import generators_tensor
 
 
-ATOL = 1e-6
+ATOL = 1e-6 if jax.numpy.result_type(float) == jax.numpy.float64 else 1e-3
 N_TEST = 15
-LMAX = 8
+LMAX = 8 if jax.numpy.result_type(float) == jax.numpy.float64 else 5
 
 
 def _random_l(key):

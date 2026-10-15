@@ -28,7 +28,7 @@ def real_to_complex(l):
     m = jax.numpy.arange(1, l + 1)
     s = jax.numpy.reciprocal(jax.numpy.sqrt(2.0))
     sign = jax.numpy.pow(-1.0, m)
-    q = jax.numpy.zeros((2 * l + 1, 2 * l + 1), dtype=jax.numpy.complex128)
+    q = jax.numpy.zeros((2 * l + 1, 2 * l + 1), dtype=complex)
     q = q.at[l, l].set(1.0)
     q = q.at[l - m, l + m].set(s)
     q = q.at[l + m, l + m].set(sign * s)
